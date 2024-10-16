@@ -7,7 +7,7 @@ It provides basic e-commerce functionalities to users and also includes techniqu
 
 ## Authors
 
-- [Harshad Rane](https://github.com/Kimbry-donee)
+- [Kimbry Donee](https://github.com/Kimbry-donee)
 
 
   
