@@ -1,0 +1,366 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title%}Pambaika{% endblock %}</title>
+  <!-- SEO Meta Tags-->
+  <meta name="description" content="Cartzilla - Bootstrap E-commerce Template">
+  <meta name="keywords"
+    content="bootstrap, shop, e-commerce, market, modern, responsive,  business, mobile, bootstrap, html5, css3, js, gallery, slider, touch, creative, clean">
+  <meta name="author" content="DSE  Studio">
+  <!-- Viewport-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon and Touch Icons-->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'main/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'main/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'main/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'main/site.webmanifest' %}">
+  <link rel="mask-icon" color="#fe6a6a" href="{% static 'main/safari-pinned-tab.svg' %}">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/simplebar/dist/simplebar.min.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/tiny-slider/dist/tiny-slider.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/nouislider/distribute/nouislider.min.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/drift-zoom/dist/drift-basic.min.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/nouislider/distribute/nouislider.min.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static 'vendor/drift-zoom/dist/drift-basic.min.css' %}" />
+  <!-- Main Theme Styles + Bootstrap-->
+  <link rel="stylesheet" media="screen" href="{% static 'css/theme.min.css' %}">
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <header class="shadow-sm">
+    <!-- Topbar-->
+
+    <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
+    <div class="navbar-sticky bg-light">
+      <div class="navbar navbar-expand-lg navbar-light">
+        <div class="container"><a class="navbar-brand d-none d-sm-block flex-shrink-0"
+            href="{% url 'apps.main:index' %}"><img src="{% static 'img/pambaika.png' %}" width="142"
+              alt="Cartzilla"></a><a class="navbar-brand d-sm-none flex-shrink-0 me-2" href="home-marketplace.html"><img
+              src="{% static 'img/pambaika-logo.png' %}" width="74" alt="Cartzilla"></a>
+          <form class="input-group d-none d-lg-flex flex-nowrap mx-4" method="POST"
+            action="{% url 'apps.main:search_product' %}">
+            {% csrf_token %}
+            <div class="input-group d-none d-lg-flex mx-4">
+              <input class="form-control rounded-end pe-5" type="text" name="keyword" placeholder="Search for products"
+                required>
+
+              <button type="submit" class="btn btn-outline-dark btn-icon">
+                <i class="ci-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
+            <a class="navbar-tool navbar-stuck-toggler" href="#"><span class="navbar-tool-tooltip">Expand menu</span>
+              <div class="navbar-tool-icon-box"><i class="navbar-tool-icon ci-menu"></i></div>
+            </a>
+
+            {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <div class="navbar-tool-icon-box"><a href="{% url 'apps.seller_accounts:profile'%}"><i
+                  class="navbar-tool-icon ci-user"></i></div>
+            {% else %}
+            <div class="navbar-tool-icon-box"><a href="{% url 'apps.accounts:profile'%}"><img id="profile_pc" width="45px" height="42px"
+              src="{{request.user.image.url}}" alt="" srcset=""></div>
+            {% endif %}
+            <div class="navbar-tool-text ms-n3"><small>Hello!!</small>{{user.username}}</div>
+            <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{% url 'apps.accounts:signout' %}"
+              data-bs-toggle="modal">
+              <button type="button" class="btn btn-sm btn-outline-primary ms-4">Logout</button>
+            </a>
+            {% else %}
+            <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{% url 'apps.accounts:signin' %}"
+              data-bs-toggle="modal">
+              <div class="navbar-tool-icon-box"><i class="navbar-tool-icon ci-user"></i></div>
+              <div class="navbar-tool-text ms-n3"><small>Hello, Sign in</small></div>
+            </a>
+            {% endif %}
+            {% if request.user.is_staff %}
+            {% comment %} <a class="nav-link" href="{% url 'apps.seller_accounts:companyproducts' %}"><i
+                class="ci-view-list"></i> Products</a>
+            {% endcomment %}{% else %}
+            <div class="navbar-tool ms-3">
+              <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{% url 'apps.cart:mycart' %}">
+                <i class="navbar-tool-icon ci-cart"></i></a>
+              <a class="navbar-tool-text fw-bolder ms-n2" href="{% url 'apps.cart:mycart' %}"><small>My Cart</small></a>
+              {% endif %}
+            </div>
+
+            <!-- Cart dropdown-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-expand-lg navbar-light navbar-stuck-menu mt-n2 pt-0 pb-2">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <!-- Search-->
+
+          <form class="input-group d-lg-none d-flex flex-nowrap my-3" method="POST"
+            action="{% url 'apps.main:search_product' %}">
+            {% csrf_token %}
+            <div class="input-group d-lg-none d-lg-flex">
+              <input class="form-control rounded-end pe-5" type="text" name="keyword" placeholder="Search for products"
+                required>
+
+              <button type="submit" class="btn btn-outline-dark btn-icon">
+                <i class="ci-search"></i>
+              </button>
+            </div>
+          </form>
+          <!-- Departments menu-->
+          <!--  <ul class="navbar-nav navbar-mega-nav pe-lg-2 me-lg-2">
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle ps-lg-0" href="#"
+                  data-bs-toggle="dropdown"><i class="ci-view-grid me-2"></i>Departments</a>
+                <div class="dropdown-menu px-2 pb-4">
+                  <div class="d-flex flex-wrap flex-sm-nowrap">
+                    <div class="mega-dropdown-column pt-3 pt-sm-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/01.jpg' %}" alt="Clothing"></a>
+                        <h6 class="fs-base mb-2">Clothing</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Women's clothing</a>
+                          </li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Men's clothing</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Kid's clothing</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="mega-dropdown-column pt-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/02.jpg' %}" alt="Shoes"></a>
+                        <h6 class="fs-base mb-2">Shoes</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Women's shoes</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Men's shoes</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Kid's shoes</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="mega-dropdown-column pt-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/03.jpg' %}" alt="Gadgets"></a>
+                        <h6 class="fs-base mb-2">Gadgets</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Smartphones &amp;
+                              Tablets</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Wearable gadgets</a>
+                          </li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">E-book readers</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap flex-sm-nowrap">
+                    <div class="mega-dropdown-column pt-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/04.jpg' %}" alt="Furniture"></a>
+                        <h6 class="fs-base mb-2">Furniture &amp; Decor</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Home furniture</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Office furniture</a>
+                          </li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Lighting and
+                              decoration</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="mega-dropdown-column pt-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/05.jpg' %}" alt="Accessories"></a>
+                        <h6 class="fs-base mb-2">Accessories</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Hats</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Sunglasses</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Bags</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="mega-dropdown-column pt-4 px-2 px-lg-3">
+                      <div class="widget widget-links"><a class="d-block overflow-hidden rounded-3 mb-3" href="#"><img
+                            src="{% static 'img/shop/departments/06.jpg' %}" alt="Entertainment"></a>
+                        <h6 class="fs-base mb-2">Entertainment</h6>
+                        <ul class="widget-list">
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Kid's toys</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Video games</a></li>
+                          <li class="widget-list-item mb-1"><a class="widget-list-link" href="#">Outdoor / Camping</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul> -->
+          <!-- Primary menu-->
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown {{Home}}"><a class="nav-link" href="{% url 'apps.main:index' %}">Home</a>
+
+            </li>
+            <li class="nav-item dropdown {{Shop}}"><a class="nav-link"
+                href="{% url 'apps.main:showallproducts' %}">Shop</a>
+
+            </li>
+            <li class="nav-item dropdown {{Accounts}}"><a class="nav-link dropdown-toggle" href="#"
+                data-bs-toggle="dropdown">Account</a>
+              <ul class="dropdown-menu">
+                {% if user.is_staff %}
+
+                <li><a class="dropdown-item" href="{% url 'apps.seller_accounts:profile' %}">Settings</a></li>
+                <li><a class="dropdown-item" href="{% url 'apps.seller_accounts:sellerorders' %}">Orders</a></li>
+                <li><a class="dropdown-item" href="{% url 'apps.seller_accounts:companyproducts' %}">Products</a></li>
+                <li><a class="dropdown-item" href="{% url 'apps.seller_accounts:add_new_product' %}">Add New Product</a>
+                </li> {% else %}
+                <li><a class="dropdown-item" href="{% url 'apps.accounts:orders' %}">Orders History</a></li>
+                <li><a class="dropdown-item" href="{% url 'apps.accounts:profile' %}">Profile Settings</a></li>
+                <li><a class="dropdown-item" href="{% url 'apps.accounts:address' %}">Account Address</a></li>
+
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'apps.accounts:signout' %}">Sign Out</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'apps.accounts:signin' %}">Sign In / Sign Up</a></li>
+                {% endif %}
+
+              </ul>
+            </li>
+            <li class="nav-item dropdown {{Contact}}"><a class="nav-link" href="{% url 'apps.main:contact' %}">Contact
+                Us</a></li>
+
+          </ul>
+
+
+
+
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+  </header>
+
+  {% block content %}
+
+  {% endblock %}
+  {% include 'messages.html' %}
+
+  <footer class="bg-dark">
+
+    <div class="pt-5 bg-darker">
+      <div class="container">
+        <div class="row pb-3">
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="d-flex"><i class="ci-rocket text-primary" style="font-size: 2.25rem;"></i>
+              <div class="ps-3">
+                <h6 class="fs-base text-light mb-1">Fast and free delivery</h6>
+                <p class="mb-0 fs-ms text-light opacity-50">Free delivery for all orders over Tsh 200,000/=</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="d-flex"><i class="ci-currency-exchange text-primary" style="font-size: 2.25rem;"></i>
+              <div class="ps-3">
+                <h6 class="fs-base text-light mb-1">Money back guarantee</h6>
+                <p class="mb-0 fs-ms text-light opacity-50">We return money within 30 days</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="d-flex"><i class="ci-support text-primary" style="font-size: 2.25rem;"></i>
+              <div class="ps-3">
+                <h6 class="fs-base text-light mb-1">24/7 customer support</h6>
+                <p class="mb-0 fs-ms text-light opacity-50">Friendly 24/7 customer support</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="d-flex"><i class="ci-card text-primary" style="font-size: 2.25rem;"></i>
+              <div class="ps-3">
+                <h6 class="fs-base text-light mb-1">Secure online payment</h6>
+                <p class="mb-0 fs-ms text-light opacity-50">We possess SSL / Secure сertificate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="hr-light mb-5">
+        <div class="row pb-2">
+          <div class="col-md-6 text-center text-md-start mb-4">
+            <div class="text-nowrap mb-4"><a class="d-inline-block align-middle mt-n1 me-3" href="#"><img
+                  class="d-block" src="{% static 'img/pambaika-footer.png' %}" width="117" alt="Cartzilla"></a>
+
+            </div>
+            <div class="widget widget-links widget-light">
+              <ul class="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
+                <li class="widget-list-item me-4"><a class="widget-list-link" href="#">Outlets</a></li>
+                <li class="widget-list-item me-4"><a class="widget-list-link" href="#">Careers</a></li>
+                <li class="widget-list-item me-4"><a class="widget-list-link"
+                    href="{% url 'apps.main:contact' %}">Contact</a></li>
+                <li class="widget-list-item me-4"><a class="widget-list-link" href="#">Privacy</a></li>
+                <li class="widget-list-item me-4"><a class="widget-list-link" href="#">Terms of use</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        <div class="pb-4 fs-xs text-light opacity-50 text-center text-md-start">© All rights reserved. Made by <a
+            class="text-light" href="https://github.com/Kimbry-donee" target="_blank" rel="noopener">Kimbry Donee</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Toolbar for handheld devices (Default)-->
+  <!--  <div class="handheld-toolbar">
+    <div class="d-table table-layout-fixed w-100"><a class="d-table-cell handheld-toolbar-item"
+        href="account-wishlist.html"><span class="handheld-toolbar-icon"><i class="ci-heart"></i></span><span
+          class="handheld-toolbar-label">Wishlist</span></a><a class="d-table-cell handheld-toolbar-item"
+        href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        onclick="window.scrollTo(0, 0)"><span class="handheld-toolbar-icon"><i class="ci-menu"></i></span><span
+          class="handheld-toolbar-label">Menu</span></a><a class="d-table-cell handheld-toolbar-item"
+        href="shop-cart.html"><span class="handheld-toolbar-icon"><i class="ci-cart"></i><span
+            class="badge bg-primary rounded-pill ms-1">4</span></span><span
+          class="handheld-toolbar-label">$265.00</span></a></div>
+  </div> -->
+  <!-- Back To Top Button--><a class="btn-scroll-top" href="#top" data-scroll><span
+      class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon ci-arrow-up">
+    </i></a>
+  <!-- Vendor scrits: js libraries and plugins-->
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/simplebar/dist/simplebar.min.js' %}"></script>
+  <script src="{% static 'vendor/tiny-slider/dist/min/tiny-slider.js' %}"></script>
+  <script src="{% static 'vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
+  <script src="{% static 'vendor/nouislider/distribute/nouislider.min.js' %}"></script>
+  <script src="{% static 'vendor/drift-zoom/dist/Drift.min.js' %}"></script>
+  <!-- Main theme script-->
+  <script src="{% static 'js/theme.min.js' %}"></script>
+  <script src="{% static 'js/account.js' %}"></script>
+  <script src="{% static 'js/seller_account.js' %}"></script>
+  <script src="{% static 'js/product-filter.js' %}"></script>
+  <script src="{% static 'js/product-filter-search.js' %}"></script>
+
+
+</body>
+
+</html>
